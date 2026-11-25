@@ -1,6 +1,6 @@
-# final boss
+# NotQuest
 
-Notlarını oyuna çeviren çalışma uygulaması. [@mrsahiner.dev](https://instagram.com/mrsahiner.dev)'de 30 günde herkesle birlikte yapılıyor.
+Notlarını oyuna çeviren çalışma uygulaması. İsmi takipçiler seçti: anketi "başka" kazandı, yorumlardaki öneri NotQuest'ti. [@mrsahiner.dev](https://instagram.com/mrsahiner.dev)'de 30 günde herkesle birlikte yapılıyor.
 
 ## Çalıştırma
 
