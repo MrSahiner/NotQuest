@@ -1,26 +1,100 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: #0d0e1a;
+  --color-panel: #161829;
+  --color-line: #2a2d4a;
+  --color-ink: #f0eee6;
+  --color-dim: #85857f;
+  --color-hl: #ffde3c;
+  --color-red: #ff5454;
+  --color-green: #5ad17a;
+  --color-boss: #b15cff;
+  --font-sans: var(--font-sg);
+  --font-mono: var(--font-jb);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--color-bg);
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg);
+  /* piksel yıldızlar, videodaki gökyüzü gibi */
+  background-image:
+    radial-gradient(#ffffff22 1px, transparent 1.5px),
+    radial-gradient(#ffffff14 1px, transparent 1.5px);
+  background-size:
+    83px 97px,
+    131px 113px;
+  background-position:
+    0 0,
+    40px 60px;
+  color: var(--color-ink);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* piksel buton: köşesiz, kalın kenar, sert gölge */
+.px-btn {
+  border: 3px solid var(--color-ink);
+  box-shadow: 4px 4px 0 #000;
+  transition:
+    transform 80ms,
+    box-shadow 80ms;
+}
+.px-btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 #000;
+}
+
+/* fosforlu kalem vurgusu */
+.hl {
+  background: var(--color-hl);
+  color: var(--color-bg);
+  padding: 0 0.2em;
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(-6px);
+  }
+}
+.bob {
+  animation: bob 2.4s ease-in-out infinite;
+}
+
+@keyframes shake {
+  20% {
+    transform: translateX(-8px);
+  }
+  40% {
+    transform: translateX(7px);
+  }
+  60% {
+    transform: translateX(-5px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+.shake {
+  animation: shake 0.35s linear;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.pop {
+  animation: pop 0.35s ease-out both;
 }
