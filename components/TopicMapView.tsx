@@ -68,8 +68,8 @@ export default function TopicMapView({ map, label = "konu haritası" }: { map: T
             <Boss color="#b15cff" size={40} className="bob" />
           </div>
           <div>
-            <p className="font-mono text-[11px] text-dim">final · final boss</p>
-            <p className="text-lg font-bold text-hl">vize</p>
+            <p className="font-mono text-[11px] text-dim">final boss · tüm bölümler</p>
+            <p className="text-lg font-bold text-hl">final</p>
           </div>
         </li>
       </ol>
