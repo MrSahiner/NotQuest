@@ -3,8 +3,9 @@
 
 export type PdfText = { pages: number; text: string; chars: number };
 
-// Yapay zekaya giden metnin üst sınırı (~50 bin token). Uzun kitaplarda baştan kırpılır.
-export const MAX_CHARS = 200_000;
+// Yapay zekaya giden metnin üst sınırı (~100 bin token). Daha uzun notlarda her sayfanın
+// başından eşit pay alınır: başlıklar sayfa başında olduğu için hiçbir bölüm kaybolmaz.
+export const MAX_CHARS = 400_000;
 
 export async function extractPdfText(
   file: File,
@@ -17,8 +18,7 @@ export async function extractPdfText(
   const data = new Uint8Array(await file.arrayBuffer());
   const task = pdfjs.getDocument({ data });
   const doc = await task.promise;
-  const parts: string[] = [];
-  let total = 0;
+  const pageTexts: string[] = [];
 
   for (let i = 1; i <= doc.numPages; i++) {
     const page = await doc.getPage(i);
@@ -29,16 +29,18 @@ export async function extractPdfText(
       line += item.str + (item.hasEOL ? "\n" : " ");
     }
     const clean = line.replace(/[ \t]+/g, " ").replace(/\n{3,}/g, "\n\n").trim();
-    if (clean && total < MAX_CHARS) {
-      const chunk = `[s.${i}]\n${clean}\n`;
-      parts.push(chunk);
-      total += chunk.length;
-    }
+    pageTexts.push(clean);
     onPage?.(i, doc.numPages);
   }
 
   const pages = doc.numPages;
   await task.destroy();
-  const text = parts.join("\n").slice(0, MAX_CHARS);
+  const total = pageTexts.reduce((n, t) => n + t.length + 12, 0);
+  const share = total > MAX_CHARS ? Math.floor(MAX_CHARS / Math.max(1, pages)) - 12 : Infinity;
+  const text = pageTexts
+    .map((t, i) => (t ? `[s.${i + 1}]\n${t.slice(0, share)}\n` : ""))
+    .filter(Boolean)
+    .join("\n")
+    .slice(0, MAX_CHARS);
   return { pages, text, chars: text.length };
 }

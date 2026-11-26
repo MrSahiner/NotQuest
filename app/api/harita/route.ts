@@ -5,7 +5,7 @@ export const maxDuration = 60;
 
 const MODEL = process.env.GEMINI_MODEL ?? "gemini-3.5-flash-lite";
 const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
-const MAX_CHARS = 200_000;
+const MAX_CHARS = 400_000;
 
 const SCHEMA = {
   type: "object",
