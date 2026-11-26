@@ -19,10 +19,11 @@ const SCHEMA = {
         properties: {
           baslik: { type: "string" },
           sayfalar: { type: "string" },
+          ozet: { type: "string" },
           konular: { type: "array", items: { type: "string" } },
           canavar: { type: "string" },
         },
-        required: ["baslik", "sayfalar", "konular", "canavar"],
+        required: ["baslik", "sayfalar", "ozet", "konular", "canavar"],
       },
     },
   },
@@ -37,12 +38,13 @@ Görevin bu dersi öğrenciler için bir konu haritasına ayırmak:
 - uniteler: dersin akışına göre 4 ile 8 arası bölüm. Her bölüm için:
   - baslik: en fazla 4 kelime
   - sayfalar: bölümün kapsadığı sayfa aralığı, örneğin "1–12"
+  - ozet: bölümde ne anlatıldığını söyleyen 1–2 cümle, en fazla 30 kelime
   - konular: 3 ile 6 arası alt konu, her biri en fazla 5 kelime
   - canavar: bölümün konusuna gönderme yapan, tek ya da iki kelimelik eğlenceli bir canavar adı
 
 Kurallar: her şey Türkçe ve küçük harfle yazılsın. Sadece metinde geçen konuları kullan, metinde olmayan bilgi ekleme. Sadece JSON döndür.`;
 
-type Unit = { baslik: string; sayfalar: string; konular: string[]; canavar: string };
+type Unit = { baslik: string; sayfalar: string; ozet: string; konular: string[]; canavar: string };
 type MapOut = { ders: string; ozet: string; uniteler: Unit[] };
 
 // Gemini'nin yapılandırılmış çıktı ayarı sürümler arasında değişti; sırayla deniyoruz.
@@ -87,6 +89,7 @@ function parse(raw: string): MapOut | null {
       .map((u: Record<string, unknown>) => ({
         baslik: str(u.baslik, 60),
         sayfalar: str(u.sayfalar, 20),
+        ozet: str(u.ozet, 300),
         konular: (Array.isArray(u.konular) ? u.konular : []).map((k: unknown) => str(k, 60)).filter(Boolean).slice(0, 6),
         canavar: str(u.canavar, 30),
       }))

@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react";
 export type MapUnit = {
   baslik: string; // bölüm başlığı
   sayfalar: string; // "1–12" gibi
+  ozet?: string; // bölümün 1–2 cümlelik özeti (eski haritalarda yok)
   konular: string[]; // alt konular
   canavar: string; // bölümün boss'u
 };
